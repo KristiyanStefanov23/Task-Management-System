@@ -1,0 +1,46 @@
+{
+	"name": "server",
+	"version": "0.1.0",
+	"description": "Backend for Task management system",
+	"main": "dist/app.js",
+	"type": "commonjs",
+	"repository": "https://github.com/KristiyanStefanov23/Task-Management-System",
+	"author": "Kristiyan Stefanov",
+	"license": "MIT",
+	"engines": {
+		"node": "22.13.1",
+		"yarn": "1.22.21"
+	},
+	"scripts": {
+		"build": "tsc",
+		"postbuild": "cross-env cpy package.json dist && cd dist && yarn install --production",
+		"start:prod": "cd dist & node -r dotenv/config index.js",
+		"dev": "npx tsx --env-file=.env --watch src/index.ts",
+		"sequelize:init": "cd ./src & sequelize init"
+	},
+	"dependencies": {
+		"bcrypt": "^5.1.1",
+		"cookie-parser": "^1.4.7",
+		"dotenv": "^16.4.7",
+		"express": "^4.21.2",
+		"jsonwebtoken": "^9.0.2",
+		"pg": "^8.13.1",
+		"sequelize": "^6.37.5"
+	},
+	"devDependencies": {
+		"@types/bcrypt": "^5.0.2",
+		"@types/cookie-parser": "^1.4.8",
+		"@types/express": "^5.0.0",
+		"@types/jsonwebtoken": "^9.0.8",
+		"@types/node": "^22.13.1",
+		"@types/sequelize": "^4.28.20",
+		"@types/validator": "^13.12.2",
+		"celebrate": "^15.0.3",
+		"cpy-cli": "^5.0.0",
+		"cross-env": "^7.0.3",
+		"reflect-metadata": "^0.2.2",
+		"sequelize-cli": "^6.6.2",
+		"sequelize-typescript": "^2.1.6",
+		"typescript": "^5.7.3"
+	}
+}

@@ -1,0 +1,32 @@
+{
+	"name": "client",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev --turbopack",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint"
+	},
+	"dependencies": {
+		"@tanstack/react-query": "^5.66.0",
+		"axios": "^1.7.9",
+		"cookie": "^1.0.2",
+		"next": "15.1.6",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
+		"react-feather": "^2.0.10",
+		"styled-components": "^6.1.15"
+	},
+	"devDependencies": {
+		"@eslint/eslintrc": "^3",
+		"@types/cookie": "^1.0.0",
+		"@types/node": "^20",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"Task-Management-System-common": "https://github.com/KristiyanStefanov23/Task-Management-System-common.git#main",
+		"eslint": "^9",
+		"eslint-config-next": "15.1.6",
+		"typescript": "^5"
+	}
+}
