@@ -15,5 +15,4 @@ taskRouter.get('/', errors_1.falliableRoute.bind(null, auth_1.authenticateUser),
 taskRouter.get('/:id', errors_1.falliableRoute.bind(null, taskController_1.getTask));
 taskRouter.patch('/:id', errors_1.falliableRoute.bind(null, taskController_1.editTask));
 taskRouter.delete('/:id', errors_1.falliableRoute.bind(null, taskController_1.deleteTask));
-taskRouter.get('/stats', errors_1.falliableRoute.bind(null, auth_1.authenticateUser), errors_1.falliableRoute.bind(null, taskController_1.getTaskStats));
 exports.default = taskRouter;

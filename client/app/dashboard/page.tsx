@@ -1,32 +1,31 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { fetchAllTasks, useApi } from '../utils/api'
-import { TaskAttributes } from 'Task-Management-System-common'
-import SmallTask from './components/taskCard'
+import { getAllTasks, useApi } from '../utils/api'
 import { useUserData } from '../context/userContext'
-
-type TaskAttributesWithUserName = TaskAttributes & { assignedUserName: string }
+import { TaskAttributesWithUserName } from 'Task-Management-System-common'
+import TaskCard from './components/taskCard'
 
 function Dashboard() {
 	const { user } = useUserData()
 
 	const [tasks, setTasks] = useState<TaskAttributesWithUserName[]>([])
 	const getTasks = useApi<TaskAttributesWithUserName[]>(
-		fetchAllTasks,
+		getAllTasks,
 		setTasks,
 		console.error
 	)
 
 	useEffect(() => {
 		getTasks.mutate({})
+		// eslint-disable-next-line
 	}, [])
 
 	return (
 		<div>
 			{!tasks.length && 'Nothing to show...'}
 			{tasks.map((task) => (
-				<SmallTask
+				<TaskCard
 					key={task.id}
 					task={task}
 					editable={user?.admin || false}

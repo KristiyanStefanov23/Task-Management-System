@@ -17,7 +17,7 @@ import {
 	TaskStatus,
 	UserAttributes,
 } from 'Task-Management-System-common'
-import { editTask, fetchAllUsers, getTask, useApi } from '@/app/utils/api'
+import { editTask, getAllUsers, getTask, useApi } from '@/app/utils/api'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 
@@ -34,7 +34,7 @@ function Page() {
 	const onCreate = () => {
 		setSuccessMsg('Successfully created')
 	}
-	const getUsers = useApi<UserAttributes[]>(fetchAllUsers, setUsers)
+	const getUsers = useApi<UserAttributes[]>(getAllUsers, setUsers)
 	const updateTask = useApi<
 		unknown,
 		unknown,
@@ -65,6 +65,7 @@ function Page() {
 		if (user?.admin) {
 			getUsers.mutate({})
 		}
+		// eslint-disable-next-line
 	}, [user])
 	if (!task) return <span>Loading</span>
 	return (

@@ -1,6 +1,6 @@
 'use client'
 import { useUserData } from '@/app/context/userContext'
-import { createTask, fetchAllUsers, useApi } from '@/app/utils/api'
+import { createTask, getAllUsers, useApi } from '@/app/utils/api'
 import { redirect } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import {
@@ -31,7 +31,7 @@ function CreateTask() {
 		setSuccessMsg('Successfully created')
 	}
 	const { user } = useUserData()
-	const getUsers = useApi<UserAttributes[]>(fetchAllUsers, setUsers)
+	const getUsers = useApi<UserAttributes[]>(getAllUsers, setUsers)
 	const createTaskApi = useApi<unknown, unknown, TaskCreationAttributes>(
 		createTask,
 		onCreate
@@ -44,6 +44,7 @@ function CreateTask() {
 
 	useEffect(() => {
 		getUsers.mutate({})
+		// eslint-disable-next-line
 	}, [])
 
 	if (user && !user?.admin) return redirect('/dashboard')

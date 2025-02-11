@@ -101,6 +101,18 @@ export function getUser(req: Request, res: Response) {
 			res.json({ success: true, user: decoded })
 		})
 	} catch (error) {
+		console.log('\n\n\n\nclean\n\n\n\n')
+
+		res.clearCookie('access-token', {
+			httpOnly: true,
+			sameSite: 'none',
+			secure: true,
+		})
+		res.clearCookie('refresh-token', {
+			httpOnly: true,
+			sameSite: 'none',
+			secure: true,
+		})
 		res.status(401).json({ success: false, message: 'Invalid token' })
 	}
 }

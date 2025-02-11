@@ -469,7 +469,7 @@
 
 "Task-Management-System-common@https://github.com/KristiyanStefanov23/Task-Management-System-common.git#main":
   version "0.1.0"
-  resolved "https://github.com/KristiyanStefanov23/Task-Management-System-common.git#a68e67aa6174911264b623ecceb22e7db351f982"
+  resolved "https://github.com/KristiyanStefanov23/Task-Management-System-common.git#9b4afa79b7f14ee6eeeb8be236402b2744afcaa6"
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
@@ -1729,11 +1729,6 @@ iterator.prototype@^1.1.4:
     get-proto "^1.0.0"
     has-symbols "^1.1.0"
     set-function-name "^2.0.2"
-
-jose@^5.9.6:
-  version "5.9.6"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-5.9.6.tgz#77f1f901d88ebdc405e57cce08d2a91f47521883"
-  integrity sha512-AMlnetc9+CV9asI19zHmrgS/WYsWUwCn2R7RzlbJWD7F9eWYUTGyBmU9o6PxngtLGOiDGPRu+Uc4fhKzbpteZQ==
 
 "js-tokens@^3.0.0 || ^4.0.0":
   version "4.0.0"

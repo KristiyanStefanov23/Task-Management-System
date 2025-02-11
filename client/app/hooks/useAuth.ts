@@ -1,18 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
 import api from '../utils/api'
 import { useUserData } from '../context/userContext'
-
-type LoginCredentials = {
-	email: string
-	password: string
-}
-
-type RegisterCredentials = {
-	email: string
-	name: string
-	password: string
-	repeatPassword: string
-}
+import {
+	LoginCredentials,
+	RegisterCredentials,
+} from 'Task-Management-System-common'
 
 const login = async (credentials: LoginCredentials) => {
 	const res = await api('/auth/login', {

@@ -1,14 +1,27 @@
 import { Response } from 'express'
 import {
+	TaskAttributes,
+	TaskCreationAttributes,
+	TaskStatus,
+} from 'Task-Management-System-common'
+import {
 	RequestBody,
 	RequestBodyWithAuth,
 	ResponseSuccessErrBody,
-	TaskAttributes,
-	TaskCreationAttributes,
 } from '../types'
-import { Sequelize } from 'sequelize'
 import Task from '../models/tasks'
 import User from '../models/users'
+import { col, fn } from 'sequelize'
+
+type UserTaskCount = {
+	user: string
+	count: number
+}
+
+export type TaskAnalytics = {
+	statusCounts: { [key in TaskStatus]: number }
+	userTaskCounts: UserTaskCount[]
+}
 
 export async function getAllTasks(req: RequestBodyWithAuth, res: Response) {
 	if (!req.user) return res.status(401).send({ message: 'Unauthorized' })
@@ -42,7 +55,7 @@ export async function getTask(req: RequestBodyWithAuth, res: Response) {
 	const task = await Task.findByPk(id, {
 		include: { model: User, as: 'assignedUser', attributes: ['name'] },
 	})
-	if (!task) return res.status(404).send({ message: "Couldn'nt find Task" })
+	if (!task) return res.status(404).send({ message: "Couldn't find Task" })
 
 	res.status(200).json(task)
 }
@@ -64,8 +77,7 @@ export async function deleteTask(
 	req: RequestBodyWithAuth & Pick<TaskAttributes, 'id'>,
 	res: ResponseSuccessErrBody
 ) {
-	if (!req.user) return res.status(401).send({ message: 'Unauthorized' })
-	if (!req.user.admin)
+	if (!req.user || !req.user.admin)
 		return res.status(401).send({ message: 'Unauthorized' })
 	const task = await Task.findByPk(req.params.id)
 	if (!task) return res.status(404).send({ message: "Couldn't find task" })
@@ -103,5 +115,44 @@ export async function editTask(
 }
 
 export async function getTaskStats(req: RequestBodyWithAuth, res: Response) {
-	throw new Error('Not implemented')
+	if (!req.user || !req.user.admin)
+		return res.status(401).send({ message: 'Unauthorized' })
+	const statusCountsRaw = await Task.findAll({
+		attributes: ['status', [fn('COUNT', col('id')), 'count']],
+		group: ['status'],
+		raw: true,
+	})
+	const statusCounts: { [key in TaskStatus]: number } = {
+		TODO: 0,
+		IN_PROGRESS: 0,
+		DONE: 0,
+	}
+	statusCountsRaw.forEach(({ status, count }: any) => {
+		statusCounts[status as TaskStatus] = parseInt(count, 10)
+	})
+
+	const userTaskCountsRaw = await User.findAll({
+		attributes: ['id', 'name', [fn('COUNT', col('tasks.id')), 'count']],
+		include: [
+			{
+				model: Task,
+				as: 'tasks',
+				attributes: [],
+			},
+		],
+		group: ['User.id'],
+		raw: true,
+	})
+
+	const userTaskCounts: UserTaskCount[] = userTaskCountsRaw.map(
+		({ name, count }: any) => ({
+			user: name,
+			count: parseInt(count, 10),
+		})
+	)
+
+	res.status(200).json({
+		statusCounts,
+		userTaskCounts,
+	})
 }

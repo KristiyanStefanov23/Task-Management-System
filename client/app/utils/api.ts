@@ -2,21 +2,11 @@ import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import { redirect } from 'next/navigation'
 import {
-	ResponseSuccessErrBody,
+	SuccessErrBody,
+	TaskAnalytics,
 	TaskAttributes,
 	TaskCreationAttributes,
-	TaskStatus,
 } from 'Task-Management-System-common'
-
-type UserTaskCount = {
-	userName: string
-	taskCount: number
-}
-
-export type TaskAnalytics = {
-	statusCounts: TaskStatus
-	userTaskCounts: UserTaskCount[]
-}
 
 const api = axios.create({
 	baseURL: typeof window === 'undefined' ? process.env.API_BASE_URL : '/api',
@@ -59,7 +49,7 @@ api.interceptors.response.use(
 	}
 )
 
-export const fetchAllTasks = async () => {
+export const getAllTasks = async () => {
 	const res = await api.get('/tasks')
 	if (res.status !== 200) throw res
 	return res.data
@@ -78,15 +68,13 @@ export const editTask = async (
 	if (res.status !== 200) throw res.data.message
 	return res.data
 }
-export const deleteTask = async (
-	id: string
-): Promise<ResponseSuccessErrBody> => {
+export const deleteTask = async (id: string): Promise<SuccessErrBody> => {
 	if (!id) throw new Error('No data provided')
 	const res = await api.delete('/tasks/' + id)
 	if (res.status !== 200) throw res.data.message
 	return res.data
 }
-export const fetchAllUsers = async () => {
+export const getAllUsers = async () => {
 	const res = await api.get('/users')
 	if (res.status !== 200) throw res.data.message
 	return res.data
@@ -97,8 +85,8 @@ export const createTask = async (data: TaskCreationAttributes) => {
 	if (res.status !== 201) throw res.data.message
 	return res.data
 }
-export const fetchTaskAnalytics = async (): Promise<TaskAnalytics> => {
-	const res = await api.get('/tasks/stats')
+export const getTaskAnalytics = async (): Promise<TaskAnalytics> => {
+	const res = await api.get('/analytic')
 	if (res.status !== 200) throw res.data.message
 	return res.data
 }

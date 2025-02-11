@@ -18,6 +18,6 @@ export type TaskAttributes = {
 	title: string
 	description: string
 	status: TaskStatus
-	assignedUserId?: string
+	assignedUserId: string
 	assignedUser?: UserAttributes
 }

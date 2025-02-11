@@ -28,10 +28,5 @@ taskRouter.get(
 taskRouter.get('/:id', falliableRoute.bind(null, getTask))
 taskRouter.patch('/:id', falliableRoute.bind(null, editTask))
 taskRouter.delete('/:id', falliableRoute.bind(null, deleteTask))
-taskRouter.get(
-	'/stats',
-	falliableRoute.bind(null, authenticateUser),
-	falliableRoute.bind(null, getTaskStats)
-)
 
 export default taskRouter

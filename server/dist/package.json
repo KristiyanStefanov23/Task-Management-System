@@ -19,8 +19,10 @@
 		"sequelize:init": "cd ./src & sequelize init"
 	},
 	"dependencies": {
+		"@types/cors": "^2.8.17",
 		"bcrypt": "^5.1.1",
 		"cookie-parser": "^1.4.7",
+		"cors": "^2.8.5",
 		"dotenv": "^16.4.7",
 		"express": "^4.21.2",
 		"jsonwebtoken": "^9.0.2",
@@ -35,6 +37,7 @@
 		"@types/node": "^22.13.1",
 		"@types/sequelize": "^4.28.20",
 		"@types/validator": "^13.12.2",
+		"Task-Management-System-common": "https://github.com/KristiyanStefanov23/Task-Management-System-common.git#main",
 		"celebrate": "^15.0.3",
 		"cpy-cli": "^5.0.0",
 		"cross-env": "^7.0.3",

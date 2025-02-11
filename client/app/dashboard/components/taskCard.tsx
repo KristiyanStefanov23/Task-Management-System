@@ -3,8 +3,8 @@ import Link from 'next/link'
 import React from 'react'
 import styled from 'styled-components'
 import {
-	ResponseSuccessErrBody,
-	TaskAttributes,
+	SuccessErrBody,
+	TaskAttributesWithUserName,
 	TaskStatus,
 } from 'Task-Management-System-common'
 
@@ -54,8 +54,6 @@ const EditButton = styled(Link)`
 	color: #333;
 `
 
-type TaskAttributesWithUserName = TaskAttributes & { assignedUserName: string }
-
 const TaskCard = ({
 	task,
 	editable,
@@ -68,7 +66,7 @@ const TaskCard = ({
 	revalidate: () => void
 }) => {
 	const { id, title, description, status, assignedUserName } = task
-	const deleteTaskApi = useApi<ResponseSuccessErrBody, Error, string>(
+	const deleteTaskApi = useApi<SuccessErrBody, Error, string>(
 		deleteTask,
 		revalidate,
 		console.error

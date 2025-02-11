@@ -20,6 +20,7 @@ exports.editTask = editTask;
 exports.getTaskStats = getTaskStats;
 const tasks_1 = __importDefault(require("../models/tasks"));
 const users_1 = __importDefault(require("../models/users"));
+const sequelize_1 = require("sequelize");
 function getAllTasks(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!req.user)
@@ -48,7 +49,7 @@ function getTask(req, res) {
             include: { model: users_1.default, as: 'assignedUser', attributes: ['name'] },
         });
         if (!task)
-            return res.status(404).send({ message: "Couldn'nt find Task" });
+            return res.status(404).send({ message: "Couldn't find Task" });
         res.status(200).json(task);
     });
 }
@@ -64,9 +65,7 @@ function createTask(req, res) {
 }
 function deleteTask(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!req.user)
-            return res.status(401).send({ message: 'Unauthorized' });
-        if (!req.user.admin)
+        if (!req.user || !req.user.admin)
             return res.status(401).send({ message: 'Unauthorized' });
         const task = yield tasks_1.default.findByPk(req.params.id);
         if (!task)
@@ -106,6 +105,40 @@ function editTask(req, res) {
 }
 function getTaskStats(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        throw new Error('Not implemented');
+        if (!req.user || !req.user.admin)
+            return res.status(401).send({ message: 'Unauthorized' });
+        const statusCountsRaw = yield tasks_1.default.findAll({
+            attributes: ['status', [(0, sequelize_1.fn)('COUNT', (0, sequelize_1.col)('id')), 'count']],
+            group: ['status'],
+            raw: true,
+        });
+        const statusCounts = {
+            TODO: 0,
+            IN_PROGRESS: 0,
+            DONE: 0,
+        };
+        statusCountsRaw.forEach(({ status, count }) => {
+            statusCounts[status] = parseInt(count, 10);
+        });
+        const userTaskCountsRaw = yield users_1.default.findAll({
+            attributes: ['id', 'name', [(0, sequelize_1.fn)('COUNT', (0, sequelize_1.col)('tasks.id')), 'count']],
+            include: [
+                {
+                    model: tasks_1.default,
+                    as: 'tasks',
+                    attributes: [],
+                },
+            ],
+            group: ['User.id'],
+            raw: true,
+        });
+        const userTaskCounts = userTaskCountsRaw.map(({ name, count }) => ({
+            user: name,
+            count: parseInt(count, 10),
+        }));
+        res.status(200).json({
+            statusCounts,
+            userTaskCounts,
+        });
     });
 }

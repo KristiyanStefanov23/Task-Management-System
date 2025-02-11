@@ -1,11 +1,12 @@
-import { Request, Response, NextFunction } from 'express'
+import { Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import User from '../models/users'
+import { RequestBodyWithAuth } from '../types'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'Test JWT Access secret 12345'
 
 export const authenticateUser = async (
-	req: Request,
+	req: RequestBodyWithAuth,
 	res: Response,
 	next: NextFunction
 ) => {
